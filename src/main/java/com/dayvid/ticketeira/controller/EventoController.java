@@ -6,10 +6,9 @@ import com.dayvid.ticketeira.service.EventoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/eventos")
@@ -22,4 +21,17 @@ public class EventoController {
         var eventoCriado = eventoService.criarEvento(dadosEvento);
         return ResponseEntity.status(201).body(eventoCriado);
     }
+
+    @GetMapping
+    public ResponseEntity<List<EventoResponseDTO>> listarEventos() {
+        var eventos = eventoService.listarEventos();
+        return ResponseEntity.ok(eventos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventoResponseDTO> obterEventoPorId(@PathVariable Long id) {
+        var evento = eventoService.buscarEventoPorId(id);
+        return ResponseEntity.ok(evento);
+    }
+
 }
