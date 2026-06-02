@@ -5,7 +5,6 @@ import com.dayvid.ticketeira.dto.EventoResponseDTO;
 import com.dayvid.ticketeira.entity.Evento;
 import com.dayvid.ticketeira.exception.RecursoNaoEncontradoException;
 import com.dayvid.ticketeira.repository.EventoRepository;
-import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +50,12 @@ public class EventoService {
         evento.atualizarDados(dadosEvento);
 
         return new EventoResponseDTO(evento);
+    }
+
+    @Transactional
+    public void deletarEvento(Long id) {
+        var evento = eventoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+        eventoRepository.delete(evento);
     }
 }

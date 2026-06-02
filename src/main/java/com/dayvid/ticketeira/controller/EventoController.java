@@ -40,6 +40,11 @@ public class EventoController {
         return ResponseEntity.ok(eventoAtualizado);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarEvento(@PathVariable Long id) {
+        eventoService.deletarEvento(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

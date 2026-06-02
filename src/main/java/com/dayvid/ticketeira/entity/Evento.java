@@ -2,7 +2,6 @@ package com.dayvid.ticketeira.entity;
 
 import com.dayvid.ticketeira.dto.EventoRequestDTO;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
