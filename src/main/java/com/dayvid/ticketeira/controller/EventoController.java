@@ -34,4 +34,12 @@ public class EventoController {
         return ResponseEntity.ok(evento);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<EventoResponseDTO> atualizarEvento(@PathVariable Long id, @RequestBody EventoRequestDTO dadosEvento) {
+        var eventoAtualizado = eventoService.atualizarEvento(id, dadosEvento);
+        return ResponseEntity.ok(eventoAtualizado);
+    }
+
+
+
 }
