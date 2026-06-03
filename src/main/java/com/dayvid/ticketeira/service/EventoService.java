@@ -37,16 +37,14 @@ public class EventoService {
 
     @Transactional(readOnly = true)
     public EventoResponseDTO buscarEventoPorId(Long id) {
-        var evento = eventoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+        var evento = obterEventoPorId(id);
 
         return new EventoResponseDTO(evento);
     }
 
     @Transactional
     public EventoResponseDTO atualizarEvento(Long id, EventoRequestDTO dadosEvento) {
-        var evento = eventoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+        var evento = obterEventoPorId(id);
         evento.atualizarDados(dadosEvento);
 
         return new EventoResponseDTO(evento);
@@ -54,8 +52,13 @@ public class EventoService {
 
     @Transactional
     public void deletarEvento(Long id) {
-        var evento = eventoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+        var evento = obterEventoPorId(id);
         eventoRepository.delete(evento);
     }
+
+    private Evento obterEventoPorId(Long id) {
+        return eventoRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado"));
+    }
+
 }

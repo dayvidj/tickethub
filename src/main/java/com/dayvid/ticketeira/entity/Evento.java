@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 
 @Table(name = "eventos")
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
