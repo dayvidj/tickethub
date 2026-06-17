@@ -1,5 +1,6 @@
 package com.dayvid.ticketeira.entity;
 
+import com.dayvid.ticketeira.dto.ClienteRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,11 @@ public class Cliente {
     private String email;
     private String telefone;
     private String cpf;
+
+    public Cliente(ClienteRequestDTO dadosCliente) {
+        this.nome = dadosCliente.nome();
+        this.email = dadosCliente.email();
+        this.telefone = dadosCliente.telefone();
+        this.cpf = dadosCliente.cpf();
+    }
 }
