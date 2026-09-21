@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(apiError);
     }
 
+    @ExceptionHandler(ClienteJaCadastradoException.class)
+    public ResponseEntity<ApiError> clienteJaCadastradoHandler(ClienteJaCadastradoException ex) {
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT.value(), ex.getMessage());
+        return ResponseEntity.status(409).body(apiError);
+    }
+
 }
