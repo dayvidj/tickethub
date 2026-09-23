@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
@@ -23,6 +22,12 @@ public class ClienteController {
     public ResponseEntity<ClienteResponseDTO> criarCliente(@RequestBody @Valid ClienteRequestDTO dadosCliente) {
         var cliente = clienteService.criarCliente(dadosCliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClienteResponseDTO>> listarClientes() {
+        var clientes = clienteService.listarClientes();
+        return ResponseEntity.ok(clientes);
     }
 
 }

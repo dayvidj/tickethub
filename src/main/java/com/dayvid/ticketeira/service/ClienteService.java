@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClienteService {
 
@@ -26,6 +29,13 @@ public class ClienteService {
         return new ClienteResponseDTO(cliente);
     }
 
+    @Transactional(readOnly = true)
+    public List<ClienteResponseDTO> listarClientes() {
+        var clientes = clienteRepository.findAll().stream()
+                .map(ClienteResponseDTO::new).collect(Collectors.toList());
+        return clientes;
+    }
+
     private void validarEmailECpf(String email, String cpf) {
         if(clienteRepository.existsByEmail(email)) {
             throw new ClienteJaCadastradoException("Email já cadastrado");
@@ -34,5 +44,4 @@ public class ClienteService {
             throw new ClienteJaCadastradoException("CPF já cadastrado");
         }
     }
-
 }
