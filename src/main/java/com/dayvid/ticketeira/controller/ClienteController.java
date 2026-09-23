@@ -30,4 +30,10 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponseDTO> obterClientePorId(@PathVariable Long id) {
+        var cliente = clienteService.obterClientePorId(id);
+        return ResponseEntity.ok(cliente);
+    }
+
 }

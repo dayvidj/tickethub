@@ -4,6 +4,7 @@ import com.dayvid.ticketeira.dto.ClienteRequestDTO;
 import com.dayvid.ticketeira.dto.ClienteResponseDTO;
 import com.dayvid.ticketeira.entity.Cliente;
 import com.dayvid.ticketeira.exception.ClienteJaCadastradoException;
+import com.dayvid.ticketeira.exception.RecursoNaoEncontradoException;
 import com.dayvid.ticketeira.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,13 @@ public class ClienteService {
         var clientes = clienteRepository.findAll().stream()
                 .map(ClienteResponseDTO::new).collect(Collectors.toList());
         return clientes;
+    }
+
+    @Transactional(readOnly = true)
+    public ClienteResponseDTO obterClientePorId(Long id) {
+        var cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado"));
+        return new ClienteResponseDTO(cliente);
     }
 
     private void validarEmailECpf(String email, String cpf) {
