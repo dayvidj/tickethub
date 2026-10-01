@@ -54,6 +54,11 @@ public class ClienteService {
         return new ClienteResponseDTO(cliente);
     }
 
+    @Transactional
+    public void deletarCliente(Long id) {
+        this.buscarClientePorId(id);
+        clienteRepository.deleteById(id);
+    }
 
     // Método privado para validar se o email e CPF já estão cadastrados no banco de dados
     private void validarEmailECpf(String email, String cpf) {
