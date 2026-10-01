@@ -39,11 +39,23 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public ClienteResponseDTO obterClientePorId(Long id) {
-        var cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado"));
+        var cliente = this.buscarClientePorId(id);
         return new ClienteResponseDTO(cliente);
     }
 
+    @Transactional
+    public ClienteResponseDTO atualizarCliente(Long id, ClienteRequestDTO dadosCliente) {
+        var cliente = this.buscarClientePorId(id);
+
+        this.validarEmailECpf(dadosCliente.email(), dadosCliente.cpf(), id);
+
+        cliente.atualizarDados(dadosCliente);
+
+        return new ClienteResponseDTO(cliente);
+    }
+
+
+    // Método privado para validar se o email e CPF já estão cadastrados no banco de dados
     private void validarEmailECpf(String email, String cpf) {
         if(clienteRepository.existsByEmail(email)) {
             throw new ClienteJaCadastradoException("Email já cadastrado");
@@ -51,5 +63,21 @@ public class ClienteService {
         if(clienteRepository.existsByCpf(cpf)) {
             throw new ClienteJaCadastradoException("CPF já cadastrado");
         }
+    }
+
+    // Sobrecarga do método validarEmailECpf para atualização de cliente ignorando os campos no próprio cliente
+    private void validarEmailECpf(String email, String cpf, Long id) {
+        if (clienteRepository.existsByEmailAndIdNot(email, id)) {
+            throw new ClienteJaCadastradoException("Email já cadastrado");
+        }
+        if (clienteRepository.existsByCpfAndIdNot(cpf, id)) {
+            throw new ClienteJaCadastradoException("CPF já cadastrado");
+        }
+    }
+
+    // Método privado para buscar um cliente por ID, lançando uma exceção se não encontrado
+    private Cliente buscarClientePorId(Long id) {
+            return clienteRepository.findById(id)
+                    .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado"));
     }
 }
